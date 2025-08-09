@@ -1,3 +1,4 @@
+import Image from 'next/image'
 import Head from 'next/head'
 import Chat from '../components/Chat'
 
@@ -16,6 +17,7 @@ export default function Home() {
         <title>{SITE_NAME} — Cannabis AI Assistant</title>
         <meta name="description" content="Anonymous, friendly cannabis education and industry insights." />
       </Head>
+
       <header className="header">
         <div className="logo">
           <div className="brand-dot" />
@@ -27,9 +29,26 @@ export default function Home() {
       </header>
 
       <main>
-        <h1 style={{margin:'8px 0'}}>Meet your {SITE_NAME} assistant</h1>
-        <p className="muted">Anonymous-friendly chat. Ask about strains, methods, effects, safer use, product types, legalization status by region, or industry trends.</p>
+        {/* Heading + Blaze */}
+        <div style={{display:'flex',alignItems:'center',gap:16,flexWrap:'wrap'}}>
+          <div>
+            <h1 style={{margin:'8px 0'}}>Meet your Guru Assistant <span style={{color:'#A4C639'}}>Blaze</span></h1>
+            <p className="muted">Anonymous-friendly chat. Ask about strains, methods, safer use, legality by region, and more.</p>
+          </div>
+          <Image
+            src="/blaze.png"
+            alt="Blaze — your Guru Assistant"
+            width={140}
+            height={140}
+            className="blaze"
+            priority
+          />
+        </div>
+
+        {/* Chat */}
         <Chat />
+
+        {/* Featured Picks */}
         <section style={{marginTop:32}}>
           <h2>Featured Picks</h2>
           <p className="muted">Hand-picked cannabis gear we love (add your affiliate links).</p>
@@ -41,6 +60,18 @@ export default function Home() {
             ))}
           </div>
         </section>
+
+        {/* Buy Me a Coffee */}
+        <div style={{marginTop:16}}>
+          <a
+            className="btn"
+            href={(process.env.NEXT_PUBLIC_BUYMEACOFFEE_URL || process.env.BUYMEACOFFEE_URL || 'https://www.buymeacoffee.com/greenguruai')}
+            target="_blank"
+            rel="noreferrer"
+          >
+            Buy us a coffee ☕
+          </a>
+        </div>
       </main>
     </div>
   )
