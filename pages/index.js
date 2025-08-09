@@ -4,6 +4,12 @@ import Chat from '../components/Chat'
 const SITE_NAME = process.env.SITE_NAME || 'GreenGuruAI'
 
 export default function Home() {
+  const picks = [
+    { name:'Smell-proof bag', link:'https://example.com/smell-proof-bag' },
+    { name:'Quality grinder', link:'https://example.com/grinder' },
+    { name:'Rolling tray', link:'https://example.com/rolling-tray' }
+  ]
+
   return (
     <div className="container">
       <Head>
@@ -24,6 +30,17 @@ export default function Home() {
         <h1 style={{margin:'8px 0'}}>Meet your {SITE_NAME} assistant</h1>
         <p className="muted">Anonymous-friendly chat. Ask about strains, methods, effects, safer use, product types, legalization status by region, or industry trends.</p>
         <Chat />
+        <section style={{marginTop:32}}>
+          <h2>Featured Picks</h2>
+          <p className="muted">Hand-picked cannabis gear we love (add your affiliate links).</p>
+          <div style={{display:'flex', gap:16, flexWrap:'wrap', marginTop:12}}>
+            {picks.map((p, i)=>(
+              <a key={i} className="card" href={p.link} target="_blank" rel="noreferrer" style={{flex:'1 1 180px', textAlign:'center'}}>
+                <strong>{p.name}</strong>
+              </a>
+            ))}
+          </div>
+        </section>
       </main>
     </div>
   )

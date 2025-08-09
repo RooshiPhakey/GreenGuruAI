@@ -7,10 +7,10 @@ export default async function handler(req, res) {
   const system = {
     role: 'system',
     content:
-      "You are GreenGuru, a friendly, responsible cannabis AI. Be concise, educational, and safe. No medical/legal advice."
+      "You are GreenGuru, a friendly, responsible cannabis AI. Be concise, educational, and safe. No medical/legal advice. Refuse illegal/unsafe requests."
   };
 
-  async function tryModel(model) {
+  async function call(model) {
     const resp = await fetch('https://api.openai.com/v1/chat/completions', {
       method: 'POST',
       headers: {
@@ -30,16 +30,12 @@ export default async function handler(req, res) {
   }
 
   try {
-    const preferred = process.env.MODEL || 'gpt-4o-mini';
+    const primary = process.env.MODEL || 'gpt-3.5-turbo';
     let reply;
-    try {
-      reply = await tryModel(preferred);
-    } catch (e) {
-      try {
-        reply = await tryModel('gpt-4o');
-      } catch (e2) {
-        reply = await tryModel('gpt-3.5-turbo');
-      }
+    try { reply = await call(primary); }
+    catch (e1) {
+      try { reply = await call('gpt-4o'); }
+      catch (e2) { reply = await call('gpt-4o-mini'); }
     }
     return res.status(200).json({ reply });
   } catch (e) {

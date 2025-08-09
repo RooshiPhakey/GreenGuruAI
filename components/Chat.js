@@ -38,9 +38,21 @@ export default function Chat() {
     }
   }
 
+  const quick = [
+    '📍 Is cannabis legal in the UK?',
+    '💡 Give me safer-use tips',
+    '🛠 What gear do you recommend for beginners?'
+  ]
+
   return (
     <div className="card">
       <div style={{display:'flex',flexDirection:'column',gap:8, minHeight: 420}}>
+        <div style={{marginTop:4, marginBottom:8, display:'flex', flexWrap:'wrap', gap:8}}>
+          {quick.map((q, idx) => (
+            <button key={idx} type="button" className="btn" style={{fontSize:12, padding:'6px 10px'}}
+              onClick={()=>setInput(q)}>{q}</button>
+          ))}
+        </div>
         {messages.map((m, i) => (
           <div key={i} className={'bubble ' + (m.role === 'user' ? 'user' : 'bot')}>
             {m.content}

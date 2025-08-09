@@ -1,32 +1,26 @@
-# GreenGuruAI
+# GreenGuruAI (Essentials)
 
-AI-powered cannabis information hub with an anonymous-friendly chatbot.
+Minimal Next.js site with a cannabis-themed chat assistant.
+Includes:
+- Quick Action buttons above the chat input
+- Featured Picks section under the chat
+- Chat API backed by OpenAI
 
 ## Quick Start
+1) `npm install`
+2) Create `.env.local` with:
+```
+OPENAI_API_KEY=YOUR_KEY
+SITE_NAME=GreenGuruAI
+MODEL=gpt-3.5-turbo
+```
+3) `npm run dev`
 
-1. **Install**: `npm install`
-2. **Set env**: create `.env.local` with:
-   ```
-   OPENAI_API_KEY=YOUR_KEY_HERE
-   SITE_NAME=GreenGuruAI
-   BRAND_PRIMARY=#2C6E49
-   ```
-3. **Run local**: `npm run dev`
-4. **Deploy on Vercel** and add the same environment variables in **Project Settings → Environment Variables**.
-
-## Environment Variables
-
-- `OPENAI_API_KEY` (required): your OpenAI key.
-- `SITE_NAME` (optional): defaults to GreenGuruAI.
-- `BRAND_PRIMARY` (optional): hex color for theming.
-- `MODEL` (optional): override model (e.g., `gpt-4o`, `gpt-3.5-turbo`).
-
-## Diagnostics
-
-- `/api/ping` → should return `pong`
-- `/api/diag` → shows if `OPENAI_API_KEY` is present
+## Deploy (Vercel)
+Add the same env vars in **Project → Settings → Environment Variables**:
+- `OPENAI_API_KEY`
+- `SITE_NAME` (optional)
+- `MODEL` (optional; defaults to `gpt-3.5-turbo`)
 
 ## Notes
-
-- The chatbot is for **information only** and does not provide medical or legal advice.
-- Anonymous mode: the site stores only ephemeral session state in the browser; no personal data is collected by default.
+- Educational only; not medical or legal advice.
