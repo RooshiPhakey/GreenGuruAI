@@ -24,3 +24,13 @@ Add the same env vars in **Project → Settings → Environment Variables**:
 
 ## Notes
 - Educational only; not medical or legal advice.
+
+## Background options
+- `NEXT_PUBLIC_BACKGROUND_MODE` (or `BACKGROUND_MODE`): `gradient` (default) or `rotate`
+- `NEXT_PUBLIC_BACKGROUND_IMAGES` (or `BACKGROUND_IMAGES`): comma-separated list of image URLs (e.g., `/bg1.jpg,/bg2.jpg`)
+
+To use rotating backgrounds, place files like `public/bg1.jpg`, `public/bg2.jpg` and set:
+```
+NEXT_PUBLIC_BACKGROUND_MODE=rotate
+NEXT_PUBLIC_BACKGROUND_IMAGES=/bg1.jpg,/bg2.jpg,/bg3.jpg
+```
