@@ -11,12 +11,13 @@ const DEFAULT_STRAINS = [
 export default function MatrixStrains({
   strains = DEFAULT_STRAINS,
   color = '#FFFFFF',
-  opacity = 0.16,
-  fontSize = 22,
+  opacity = 0.2,
+  fontSize = 20,
   enabled = true
 }) {
   const ref = useRef(null)
   const rafRef = useRef(0)
+  const cleanupRef = useRef(() => {})
 
   useEffect(() => {
     if (!enabled) return
@@ -29,37 +30,40 @@ export default function MatrixStrains({
     const canvas = ref.current
     if (!canvas) return
     const ctx = canvas.getContext('2d')
-
     let dpr = Math.max(1, window.devicePixelRatio || 1)
-    let width = 0, height = 0
-    let cols = 0
+    let width = 0, height = 0, cols = 0
     let yPositions = []
-    let names = strains.filter(Boolean)
+    const names = strains.filter(Boolean)
 
-    function resize() {
-      const parent = canvas.parentElement || document.body
-      const clientWidth = parent.clientWidth || window.innerWidth
-      const clientHeight = parent.clientHeight || window.innerHeight
-      width = clientWidth
-      height = clientHeight
+    function setSize(w, h) {
+      width = Math.max(1, Math.floor(w))
+      height = Math.max(1, Math.floor(h))
       canvas.width = Math.floor(width * dpr)
       canvas.height = Math.floor(height * dpr)
       canvas.style.width = width + 'px'
       canvas.style.height = height + 'px'
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0)
-
-      cols = Math.max(8, Math.floor(width / (fontSize * 1.25)))
+      cols = Math.max(6, Math.floor(width / (fontSize * 1.25)))
       yPositions = new Array(cols).fill(0).map(() => Math.random() * height)
       ctx.font = `${fontSize}px ui-monospace, SFMono-Regular, Menlo, Consolas, monospace`
+      ctx.textBaseline = 'top'
+      ctx.shadowColor = color
+      ctx.shadowBlur = 8
+    }
+
+    function resizeFromParent() {
+      const parent = canvas.parentElement
+      // Fallback if parent has no height yet
+      const w = (parent?.clientWidth || window.innerWidth)
+      const h = (parent?.clientHeight || Math.max(window.innerHeight * 0.5, 300))
+      setSize(w, h)
     }
 
     function draw() {
-      ctx.fillStyle = `rgba(0, 0, 0, ${opacity})`
+      // fade trails
+      ctx.fillStyle = `rgba(0,0,0,${opacity})`
       ctx.fillRect(0, 0, width, height)
-
       ctx.fillStyle = color
-      ctx.shadowColor = color
-      ctx.shadowBlur = 8
 
       for (let i = 0; i < cols; i++) {
         const x = i * (fontSize * 1.25)
@@ -68,22 +72,30 @@ export default function MatrixStrains({
         const start = Math.max(0, Math.floor((yPositions[i] / fontSize) % Math.max(1, name.length - sliceLen)))
         const chunk = name.slice(start, start + sliceLen)
         ctx.fillText(chunk, x, yPositions[i])
+        // move downward (positive)
         yPositions[i] += fontSize * 0.6
-        if (yPositions[i] > height + 50) {
-          yPositions[i] = -Math.random() * 200
-        }
+        if (yPositions[i] > height + 50) yPositions[i] = -Math.random() * 200
       }
-
       rafRef.current = requestAnimationFrame(draw)
     }
 
-    resize()
-    draw()
-    window.addEventListener('resize', resize)
-    return () => {
+    // Initial size (after a tick) and observers
+    resizeFromParent()
+    const ro = new ResizeObserver(() => resizeFromParent())
+    const parentEl = canvas.parentElement
+    if (parentEl) ro.observe(parentEl)
+    const onWinResize = () => resizeFromParent()
+    window.addEventListener('resize', onWinResize)
+
+    // Kick off draw loop
+    rafRef.current = requestAnimationFrame(draw)
+
+    cleanupRef.current = () => {
       cancelAnimationFrame(rafRef.current)
-      window.removeEventListener('resize', resize)
+      window.removeEventListener('resize', onWinResize)
+      try { ro.disconnect() } catch {}
     }
+    return () => cleanupRef.current()
   }, [enabled, opacity, fontSize, color, strains])
 
   return <canvas ref={ref} className="matrix-canvas" aria-hidden="true" />
