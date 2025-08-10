@@ -1,9 +1,1 @@
-export default function Privacy() {
-  return (
-    <div className="container">
-      <h1>Privacy Policy</h1>
-      <p>We respect your privacy. This site is designed to allow anonymous use of the chatbot. We do not require sign-in and do not knowingly collect personal information.</p>
-      <p className="legal">Last updated: 2025-08-09</p>
-    </div>
-  )
-}
+export default function Privacy(){return(<div className="container"><h1>Privacy Policy</h1><p>We respect your privacy. This site is designed to allow anonymous use of the chatbot. We do not require sign-in and do not knowingly collect personal information.</p><p className="legal">Last updated: 2025-08-10</p></div>)}

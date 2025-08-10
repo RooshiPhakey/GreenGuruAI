@@ -1,9 +1,1 @@
-export default function Terms() {
-  return (
-    <div className="container">
-      <h1>Terms of Use</h1>
-      <p>This service provides educational information about cannabis and related topics. It does not provide medical, legal, or financial advice. Use is limited to jurisdictions where cannabis-related content is lawful and only by adults of legal age.</p>
-      <p className="legal">Last updated: 2025-08-09</p>
-    </div>
-  )
-}
+export default function Terms(){return(<div className="container"><h1>Terms of Use</h1><p>This service provides educational information about cannabis and related topics. It does not provide medical, legal, or financial advice. Use is limited to jurisdictions where cannabis-related content is lawful and only by adults of legal age.</p><p className="legal">Last updated: 2025-08-10</p></div>)}
