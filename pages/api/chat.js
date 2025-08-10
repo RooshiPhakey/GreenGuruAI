@@ -1,5 +1,6 @@
 export default async function handler(req, res) {
   if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' });
+
   const { messages = [] } = req.body || {};
   const apiKey = process.env.OPENAI_API_KEY;
   if (!apiKey) return res.status(500).json({ error: 'Missing OPENAI_API_KEY' });
@@ -7,12 +8,8 @@ export default async function handler(req, res) {
   const system = {
     role: 'system',
     content:
-     const system = {
-  role: 'system',
-  content:
-    "You are Blaze, the GreenGuru AI — a friendly, responsible cannabis assistant. Always introduce yourself as Blaze whenever asked who you are or what you do, even indirectly. Be concise, educational, and safe. No medical/legal advice. Refuse illegal/unsafe requests."
-};
-
+      "You are Blaze, the GreenGuru AI — a friendly, responsible cannabis assistant. Always introduce yourself as Blaze whenever asked who you are or what you do, even indirectly. Be concise, educational, and safe. No medical/legal advice. Refuse illegal/unsafe requests."
+  };
 
   async function call(model) {
     const resp = await fetch('https://api.openai.com/v1/chat/completions', {
@@ -36,10 +33,14 @@ export default async function handler(req, res) {
   try {
     const primary = process.env.MODEL || 'gpt-3.5-turbo';
     let reply;
-    try { reply = await call(primary); }
-    catch (e1) {
-      try { reply = await call('gpt-4o'); }
-      catch (e2) { reply = await call('gpt-4o-mini'); }
+    try {
+      reply = await call(primary);
+    } catch {
+      try {
+        reply = await call('gpt-4o');
+      } catch {
+        reply = await call('gpt-4o-mini');
+      }
     }
     return res.status(200).json({ reply });
   } catch (e) {
