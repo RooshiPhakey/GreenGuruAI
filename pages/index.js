@@ -5,11 +5,10 @@ import Chat from '../components/Chat'
 const SITE_NAME = process.env.SITE_NAME || 'GreenGuruAI'
 
 export default function Home() {
-  // Your Featured Picks with product images
   const picks = [
     {
-      name: 'Work-Safe Pre-Roll Holder',
-      link: 'https://amzn.to/4lmVicu',
+      name: 'Carry Case +',
+      link: 'https://amzn.to/4lon8VA',
       img: 'https://m.media-amazon.com/images/I/81GwOmUpA4L._AC_SX679_.jpg'
     },
     {
@@ -18,8 +17,8 @@ export default function Home() {
       img: 'https://m.media-amazon.com/images/I/71KFwOfXEPL._AC_SX679_.jpg'
     },
     {
-      name: 'Carry Case +',
-      link: 'https://amzn.to/4lon8VA',
+      name: 'Work-Safe Pre-Roll Holder',
+      link: 'https://amzn.to/4lmVicu',
       img: 'https://m.media-amazon.com/images/I/613ayF1eOhL._AC_SX679_.jpg'
     }
   ]
@@ -61,10 +60,9 @@ export default function Home() {
         {/* Chat */}
         <Chat />
 
-        {/* Featured Picks with images */}
+        {/* Featured Picks with hover effect */}
         <section style={{marginTop:32}}>
           <h2>Featured Picks</h2>
-          <p className="muted">Hand-picked cannabis gear we love.</p>
 
           <div style={{display:'flex',flexWrap:'wrap',gap:'12px',marginTop:'12px'}}>
             {picks.map((p, i) => (
@@ -78,30 +76,39 @@ export default function Home() {
                   textAlign:'center',
                   border:'1px solid rgba(255,255,255,0.2)',
                   borderRadius:'12px',
-                  padding:'12px',
+                  padding:'8px',
                   background:'#fff',
                   color:'#000',
                   textDecoration:'none',
-                  boxShadow:'0 8px 20px rgba(0,0,0,0.12)'
+                  boxShadow:'0 8px 20px rgba(0,0,0,0.12)',
+                  transition:'transform 0.2s ease, box-shadow 0.2s ease',
+                  cursor:'pointer'
+                }}
+                onMouseEnter={e => {
+                  e.currentTarget.style.transform = 'translateY(-4px)'
+                  e.currentTarget.style.boxShadow = '0 12px 24px rgba(0,0,0,0.18)'
+                }}
+                onMouseLeave={e => {
+                  e.currentTarget.style.transform = 'translateY(0)'
+                  e.currentTarget.style.boxShadow = '0 8px 20px rgba(0,0,0,0.12)'
                 }}
               >
                 <img
-  src={p.img}
-  alt={p.name}
-  style={{
-    maxWidth: '100%',
-    maxHeight: '150px', // limits height
-    objectFit: 'contain', // keeps aspect ratio without cropping
-    borderRadius: '8px'
-  }}
-/>
-
-                <strong style={{display:'block',margin:'10px 0 8px'}}>{p.name}</strong>
+                  src={p.img}
+                  alt={p.name}
+                  style={{
+                    maxWidth:'100%',
+                    maxHeight:'150px',
+                    objectFit:'contain',
+                    borderRadius:'8px'
+                  }}
+                />
+                <strong style={{display:'block',margin:'8px 0 6px'}}>{p.name}</strong>
                 <span style={{
                   display:'inline-block',
                   background:'#A4C639',
                   color:'#fff',
-                  padding:'8px 14px',
+                  padding:'6px 10px',
                   borderRadius:'8px',
                   fontWeight:'bold'
                 }}>Shop Now</span>
