@@ -10,10 +10,10 @@ const DEFAULT_STRAINS = [
 
 export default function MatrixNamesCanvas({
   strains = DEFAULT_STRAINS,
-  color = '#A4C639',
+  color = '#A4C639',  // brand green
   fontSize = 20,
-  fade = 0.10,
-  rowsPerSec = 1.4,
+  fade = 0.12,        // trail strength per frame
+  rowsPerSec = 1.2,   // base speed in rows/second (slow & readable)
   enabled = true
 }) {
   const ref = useRef(null)
@@ -29,50 +29,44 @@ export default function MatrixNamesCanvas({
     const canvas = ref.current
     if (!canvas) return
     const ctx = canvas.getContext('2d')
-    let width = 0, height = 0, cols = 0, rows = 0
-    let positions = []
-    let speeds = []
+    let width = 0, height = 0, cols = 0
+    let rows = 0
+    let positions = []   // y in rows
+    let speeds = []      // rows per second
     let dpr = Math.max(1, window.devicePixelRatio || 1)
-    let fsize = fontSize
 
     function setSize() {
       const parent = canvas.parentElement || document.body
       width = parent.clientWidth || window.innerWidth
       height = parent.clientHeight || Math.max(window.innerHeight * 0.5, 320)
-      fsize = fontSize
-      if (width < 480) fsize = Math.max(14, Math.round(fontSize * 0.85))
-
-      rows = Math.ceil(height / fsize) + 4
+      rows = Math.ceil(height / fontSize) + 4
       canvas.width = Math.floor(width * dpr)
       canvas.height = Math.floor(height * dpr)
       canvas.style.width = width + 'px'
       canvas.style.height = height + 'px'
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0)
-
-      cols = Math.max(10, Math.floor(width / (fsize * 1.1)))
+      cols = Math.max(8, Math.floor(width / (fontSize * 1.2)))
       positions = Array(cols).fill(0).map(() => Math.random() * rows)
-      speeds = Array(cols).fill(0).map(() => {
-        const s = rowsPerSec * (0.85 + Math.random() * 0.4)
-        return Math.max(rowsPerSec * 0.7, Math.min(rowsPerSec * 1.3, s))
-      })
-
-      ctx.font = `${fsize}px ui-monospace, SFMono-Regular, Menlo, Consolas, monospace`
+      speeds = Array(cols).fill(0).map(() => rowsPerSec * (0.75 + Math.random() * 0.5)) // slight variance
+      ctx.font = `${fontSize}px ui-monospace, SFMono-Regular, Menlo, Consolas, monospace`
       ctx.textBaseline = 'top'
     }
 
     function draw(ts) {
       if (!lastRef.current) lastRef.current = ts
-      const dt = Math.min(0.08, Math.max(0.0001, (ts - lastRef.current) / 1000))
+      const dt = Math.min(0.1, Math.max(0.0001, (ts - lastRef.current) / 1000)) // clamp 0 < dt <= 100ms
       lastRef.current = ts
 
+      // trail
       ctx.globalCompositeOperation = 'source-over'
       ctx.fillStyle = `rgba(0,0,0,${fade})`
       ctx.fillRect(0, 0, width, height)
 
       ctx.fillStyle = color
       for (let i = 0; i < cols; i++) {
-        const x = i * (fsize * 1.1)
-        const yPx = positions[i] * fsize
+        // convert row to px
+        const x = i * (fontSize * 1.2)
+        const yPx = positions[i] * fontSize
 
         const s = strains[(i + Math.floor(positions[i])) % strains.length]
         const len = Math.max(3, Math.min(s.length, 10))
@@ -81,14 +75,13 @@ export default function MatrixNamesCanvas({
 
         ctx.fillText(chunk, x, yPx)
 
+        // motion: rows per second * dt
         positions[i] += speeds[i] * dt
-        if (yPx > height + fsize * 2) {
-          positions[i] = -Math.random() * 4
-          const v = rowsPerSec * (0.85 + Math.random() * 0.4)
-          speeds[i] = Math.max(rowsPerSec * 0.7, Math.min(rowsPerSec * 1.3, v))
+        if (yPx > height + fontSize * 2) {
+          positions[i] = -Math.random() * 6
+          speeds[i] = rowsPerSec * (0.75 + Math.random() * 0.5)
         }
       }
-
       rafRef.current = requestAnimationFrame(draw)
     }
 
@@ -97,13 +90,14 @@ export default function MatrixNamesCanvas({
     const onResize = () => setSize()
     window.addEventListener('resize', onResize)
 
+    // watchdog fallback: if RAF ever stalls > 400ms, kick it
     const watchdog = setInterval(() => {
       const now = performance.now()
       if (now - lastRef.current > 400) {
         cancelAnimationFrame(rafRef.current)
         rafRef.current = requestAnimationFrame(draw)
       }
-    }, 600)
+    }, 500)
 
     return () => {
       clearInterval(watchdog)
