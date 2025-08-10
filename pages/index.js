@@ -31,7 +31,7 @@ export default function Home() {
       <main>
         <div style={{display:'flex',alignItems:'center',gap:16,flexWrap:'wrap'}}>
           <div>
-            <h1 style={{margin:'8px 0'}}>Meet your Guru Assistant <span style={{color:'#A4C639'}}>Blaze</span></h1>
+            <h1 style={{margin:'8px 0'}}>Meet your Green Guru AI Assistant <span style={{color:'#A4C639'}}>Blaze</span></h1>
             <p className="muted">Anonymous-friendly chat. Ask about strains, methods, safer use, legality by region, and more.</p>
           </div>
           <Image
