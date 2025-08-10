@@ -64,7 +64,7 @@ export default function Home() {
         {/* Featured Picks with images */}
         <section style={{marginTop:32}}>
           <h2>Featured Picks</h2>
-          <p className="muted">Hand-picked cannabis gear we love (add your affiliate links).</p>
+          <p className="muted">Hand-picked cannabis gear we love.</p>
 
           <div style={{display:'flex',flexWrap:'wrap',gap:'12px',marginTop:'12px'}}>
             {picks.map((p, i) => (
