@@ -1,4 +1,4 @@
-\import Image from 'next/image'
+import Image from 'next/image'
 import Head from 'next/head'
 import Chat from '../components/Chat'
 import MatrixNamesCanvas from '../components/MatrixNamesCanvas'

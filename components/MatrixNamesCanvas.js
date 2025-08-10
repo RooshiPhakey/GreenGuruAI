@@ -10,15 +10,18 @@ const DEFAULT_STRAINS = [
 
 export default function MatrixNamesCanvas({
   strains = DEFAULT_STRAINS,
-  color = '#A4C639',   // brand green (readable on dark bg)
-  fontSize = 20,       // desktop default (auto-scales a bit on mobile)
-  fade = 0.10,         // longer trails for smooth look
-  rowsPerSec = 1.4,    // fluid but readable; tune 1.2–1.6 to taste
+  color = '#A4C639',   // brand green
+  fontSize = 20,       // keep as requested
+  fade = 0.12,         // trail fade per frame
+  rowsPerSec = 1.6,    // a touch faster than before
+  minSpeed = 1.0,      // clamp so nothing crawls
+  maxSpeed = 2.4,      // clamp so nothing races
   enabled = true
 }) {
   const ref = useRef(null)
   const rafRef = useRef(0)
   const lastRef = useRef(0)
+  const reseedRef = useRef(0)
 
   useEffect(() => {
     if (!enabled) return
@@ -33,53 +36,46 @@ export default function MatrixNamesCanvas({
     let positions = []   // y in rows (float)
     let speeds = []      // rows per second (float)
     let dpr = Math.max(1, window.devicePixelRatio || 1)
-    let fsize = fontSize
+
+    function randSpeed() {
+      // base +/- variance, then clamped
+      const s = rowsPerSec * (0.85 + Math.random() * 0.6)
+      return Math.max(minSpeed, Math.min(maxSpeed, s))
+    }
 
     function setSize() {
       const parent = canvas.parentElement || document.body
       width = parent.clientWidth || window.innerWidth
       height = parent.clientHeight || Math.max(window.innerHeight * 0.5, 320)
-
-      // Responsive for mobile: gently reduce size below 480px width
-      fsize = fontSize
-      if (width < 480) fsize = Math.max(14, Math.round(fontSize * 0.85))
-
-      rows = Math.ceil(height / fsize) + 4
+      rows = Math.ceil(height / fontSize) + 6
       canvas.width = Math.floor(width * dpr)
       canvas.height = Math.floor(height * dpr)
       canvas.style.width = width + 'px'
       canvas.style.height = height + 'px'
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0)
-
-      // Full-width columns spaced by character width
-      cols = Math.max(10, Math.floor(width / (fsize * 1.1)))
-
+      // Full-width columns
+      cols = Math.max(10, Math.floor(width / (fontSize * 1.1)))
       positions = Array(cols).fill(0).map(() => Math.random() * rows)
-
-      // per-column variance; clamp so nothing crawls or races
-      speeds = Array(cols).fill(0).map(() => {
-        const s = rowsPerSec * (0.85 + Math.random() * 0.4)
-        return Math.max(rowsPerSec * 0.7, Math.min(rowsPerSec * 1.3, s))
-      })
-
-      ctx.font = `${fsize}px ui-monospace, SFMono-Regular, Menlo, Consolas, monospace`
+      speeds = Array(cols).fill(0).map(() => randSpeed())
+      ctx.font = `${fontSize}px ui-monospace, SFMono-Regular, Menlo, Consolas, monospace`
       ctx.textBaseline = 'top'
     }
 
     function draw(ts) {
       if (!lastRef.current) lastRef.current = ts
-      const dt = Math.min(0.08, Math.max(0.0001, (ts - lastRef.current) / 1000)) // clamp dt to avoid spikes
+      const dt = Math.min(0.08, Math.max(0.0001, (ts - lastRef.current) / 1000)) // clamp dt
       lastRef.current = ts
+      reseedRef.current += dt
 
-      // trails
+      // Fade trails
       ctx.globalCompositeOperation = 'source-over'
       ctx.fillStyle = `rgba(0,0,0,${fade})`
       ctx.fillRect(0, 0, width, height)
 
       ctx.fillStyle = color
       for (let i = 0; i < cols; i++) {
-        const x = i * (fsize * 1.1)
-        const yPx = positions[i] * fsize
+        const x = i * (fontSize * 1.1)
+        const yPx = positions[i] * fontSize
 
         const s = strains[(i + Math.floor(positions[i])) % strains.length]
         const len = Math.max(3, Math.min(s.length, 10))
@@ -88,13 +84,23 @@ export default function MatrixNamesCanvas({
 
         ctx.fillText(chunk, x, yPx)
 
-        // advance & loop forever
+        // advance & loop
         positions[i] += speeds[i] * dt
-        if (yPx > height + fsize * 2) {
-          positions[i] = -Math.random() * 4
-          const v = rowsPerSec * (0.85 + Math.random() * 0.4)
-          speeds[i] = Math.max(rowsPerSec * 0.7, Math.min(rowsPerSec * 1.3, v))
+        if (yPx > height + fontSize * 2) {
+          positions[i] = -Math.random() * 6
+          speeds[i] = randSpeed()
         }
+      }
+
+      // periodic reseed to avoid any drift/stall accumulation
+      if (reseedRef.current > 12) { // every ~12s
+        for (let i = 0; i < cols; i++) {
+          if (Math.random() < 0.2) { // reseed 20% of columns
+            positions[i] = Math.random() * rows * 0.2
+            speeds[i] = randSpeed()
+          }
+        }
+        reseedRef.current = 0
       }
 
       rafRef.current = requestAnimationFrame(draw)
@@ -105,21 +111,11 @@ export default function MatrixNamesCanvas({
     const onResize = () => setSize()
     window.addEventListener('resize', onResize)
 
-    // watchdog: if rAF ever stalls (tab throttled), kick it back on
-    const watchdog = setInterval(() => {
-      const now = performance.now()
-      if (now - lastRef.current > 400) {
-        cancelAnimationFrame(rafRef.current)
-        rafRef.current = requestAnimationFrame(draw)
-      }
-    }, 600)
-
     return () => {
-      clearInterval(watchdog)
       cancelAnimationFrame(rafRef.current)
       window.removeEventListener('resize', onResize)
     }
-  }, [enabled, fade, fontSize, color, strains, rowsPerSec])
+  }, [enabled, fade, fontSize, color, strains, rowsPerSec, minSpeed, maxSpeed])
 
   return <canvas ref={ref} className="matrix-canvas" aria-hidden="true" />
 }
