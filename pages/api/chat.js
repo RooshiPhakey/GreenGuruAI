@@ -7,7 +7,7 @@ export default async function handler(req, res) {
   const system = {
     role: 'system',
     content:
-      "You are GreenGuru, a friendly, responsible cannabis AI. Be concise, educational, and safe. No medical/legal advice. Refuse illegal/unsafe requests."
+      "You are Blaze, a friendly, responsible cannabis AI. Be concise, educational, and safe. No medical/legal advice. Refuse illegal/unsafe requests."
   };
 
   async function call(model) {
