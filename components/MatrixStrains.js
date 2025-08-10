@@ -10,7 +10,7 @@ const DEFAULT_STRAINS = [
 
 export default function MatrixStrains({
   strains = DEFAULT_STRAINS,
-  color = '#39FF14',
+  color = '#FFFFFF',
   opacity = 0.16,
   fontSize = 16,
   enabled = true
@@ -66,7 +66,7 @@ export default function MatrixStrains({
         const start = Math.max(0, Math.floor((yPositions[i] / fontSize) % Math.max(1, name.length - sliceLen)))
         const chunk = name.slice(start, start + sliceLen)
         ctx.fillText(chunk, x, yPositions[i])
-        yPositions[i] += fontSize * (0.9 + Math.random() * 0.6)
+        yPositions[i] += fontSize * 0.6
         if (yPositions[i] > height + 50) {
           yPositions[i] = -Math.random() * 200
         }
