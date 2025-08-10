@@ -1,81 +1,46 @@
 :root {
   --brand: #2C6E49;
   --brand-2: #A4C639;
-  --bg: #F5F1E9;
-  --ink: #0f172a;
+  --bg: #0f1a12;
+  --ink: #e6f6e9;
 }
 html, body, #__next { height: 100%; }
 body {
   margin: 0;
-  background: var(--bg);
+  background: radial-gradient(1200px 600px at 10% 10%, #16321f 0%, #0b1b12 45%, #061109 100%);
   color: var(--ink);
   font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji","Segoe UI Emoji";
 }
-a { color: var(--brand); text-decoration: none; }
-.container { max-width: 900px; margin: 0 auto; padding: 24px; }
-.card { background: #fff; border-radius: 16px; padding: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.08); }
+a { color: var(--brand-2); text-decoration: none; }
+.container { max-width: 960px; margin: 0 auto; padding: 24px; }
+
+/* Glass card */
+.card {
+  background: rgba(255,255,255,0.08);
+  border: 1px solid rgba(255,255,255,0.18);
+  border-radius: 16px;
+  padding: 20px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.25);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+
 .btn { display:inline-flex; align-items:center; gap:8px; border: none; background: var(--brand); color:#fff; padding: 10px 12px; border-radius: 12px; cursor:pointer; font-weight:600; }
 .btn:disabled { opacity:.6; cursor:not-allowed; }
+
 .bubble { padding: 12px 14px; border-radius: 14px; margin: 8px 0; white-space: pre-wrap; word-break: break-word; }
-.bubble.user { background:#e2e8f0; align-self:flex-end; }
-.bubble.bot { background:#eaf7ea; border:1px solid #bfe3bf; }
+.bubble.user { background: rgba(255,255,255,0.15); align-self:flex-end; }
+.bubble.bot { background: rgba(164,198,87,0.12); border:1px solid rgba(164,198,87,0.25); }
+
 .row { display:flex; gap:10px; }
-.input { flex:1; padding:12px; border-radius:12px; border:1px solid #cbd5e1; }
+.input { flex:1; padding:12px; border-radius:12px; border:1px solid rgba(255,255,255,0.2); background: rgba(0,0,0,0.25); color: var(--ink); }
 .header { display:flex; align-items:center; justify-content:space-between; gap:12px; margin-bottom: 16px; }
 .logo { display:flex; align-items:center; gap:10px; }
 .brand-dot { width:12px; height:12px; background:var(--brand-2); border-radius:50%; }
-.muted { color:#475569; font-size: 14px; }
-.legal { font-size: 12px; color:#475569; }
+.muted { color:#cde6d4; opacity: .9; }
+.legal { font-size: 12px; color:#b5d0ba; }
 
-/* Animated gradient background */
-body::before {
-  content: "";
-  position: fixed;
-  inset: 0;
-  z-index: -2;
-  background: linear-gradient(120deg, #102a13, #2C6E49, #A4C639, #0b4d1e);
-  background-size: 200% 200%;
-  animation: ggGradient 20s ease infinite;
-}
-@keyframes ggGradient {
-  0% { background-position: 0% 50%; }
-  50% { background-position: 100% 50%; }
-  100% { background-position: 0% 50%; }
-}
-
-/* Optional rotating image layer (enabled when BACKGROUND_MODE=rotate) */
-.gg-rotator {
-  position: fixed;
-  inset: 0;
-  z-index: -3;
-  background-size: cover;
-  background-position: center;
-  transition: opacity .8s ease, background-image 1s ease;
-}
-
-/* Subtle vignette overlay for readability */
-body::after {
-  content: "";
-  position: fixed;
-  inset: 0;
-  z-index: -1;
-  background: radial-gradient(ellipse at center, rgba(0,0,0,0.12) 0%, rgba(0,0,0,0.35) 100%);
-  pointer-events: none;
-}
-
-/* Glass card effect */
-.card {
-  background: rgba(255, 255, 255, 0.85);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-  border: 1px solid rgba(255,255,255,0.35);
-}
-
-/* Headings style */
-h1,h2 { color: #f1f5f9; text-shadow: 0 2px 10px rgba(0,0,0,0.25); }
-.muted { color: #e2e8f0; opacity: .9; }
-.header strong { color: #eaffea; }
-.nav a, nav a { color: #e2e8f0; }
+/* Blaze animation */
 @keyframes ggFloat { 0%{transform:translateY(0)} 50%{transform:translateY(-6px)} 100%{transform:translateY(0)} }
 @keyframes ggBreath { 0%{filter:drop-shadow(0 0 0 rgba(164,198,57,.0))} 50%{filter:drop-shadow(0 0 12px rgba(164,198,57,.45))} 100%{filter:drop-shadow(0 0 0 rgba(164,198,57,.0))} }
-.blaze { animation: ggFloat 6s ease-in-out infinite, ggBreath 5.5s ease-in-out infinite; }
+.blaze { animation: ggFloat 6s ease-in-out infinite, ggBreath 5.5s ease-in-out infinite; border-radius: 20px; }

@@ -1,10 +1,13 @@
-# GreenGuruAI (Essentials)
+# GreenGuruAI — with Blaze
 
-Minimal Next.js site with a cannabis-themed chat assistant.
-Includes:
-- Quick Action buttons above the chat input
-- Featured Picks section under the chat
-- Chat API backed by OpenAI
+Next.js site for your cannabis AI assistant, now with an animated Blaze mascot.
+
+## What’s included
+- Animated Blaze next to the heading (file at `public/blaze.png`)
+- Quick Action buttons above the chat
+- Featured Picks section under the chat (swap in your affiliate links)
+- Buy Me a Coffee button (config via env var)
+- OpenAI-backed chat API
 
 ## Quick Start
 1) `npm install`
@@ -13,24 +16,13 @@ Includes:
 OPENAI_API_KEY=YOUR_KEY
 SITE_NAME=GreenGuruAI
 MODEL=gpt-3.5-turbo
+NEXT_PUBLIC_BUYMEACOFFEE_URL=https://www.buymeacoffee.com/greenguruai
 ```
 3) `npm run dev`
 
 ## Deploy (Vercel)
-Add the same env vars in **Project → Settings → Environment Variables**:
-- `OPENAI_API_KEY`
-- `SITE_NAME` (optional)
-- `MODEL` (optional; defaults to `gpt-3.5-turbo`)
+- Add the same env vars in **Project → Settings → Environment Variables** (Preview + Production).
+- Deploy and you’re live.
 
-## Notes
-- Educational only; not medical or legal advice.
-
-## Background options
-- `NEXT_PUBLIC_BACKGROUND_MODE` (or `BACKGROUND_MODE`): `gradient` (default) or `rotate`
-- `NEXT_PUBLIC_BACKGROUND_IMAGES` (or `BACKGROUND_IMAGES`): comma-separated list of image URLs (e.g., `/bg1.jpg,/bg2.jpg`)
-
-To use rotating backgrounds, place files like `public/bg1.jpg`, `public/bg2.jpg` and set:
-```
-NEXT_PUBLIC_BACKGROUND_MODE=rotate
-NEXT_PUBLIC_BACKGROUND_IMAGES=/bg1.jpg,/bg2.jpg,/bg3.jpg
-```
+## Change Featured Picks
+Edit `pages/index.js`, update the `picks` array links to your affiliate URLs.

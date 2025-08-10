@@ -29,7 +29,6 @@ export default function Home() {
       </header>
 
       <main>
-        {/* Heading + Blaze */}
         <div style={{display:'flex',alignItems:'center',gap:16,flexWrap:'wrap'}}>
           <div>
             <h1 style={{margin:'8px 0'}}>Meet your Guru Assistant <span style={{color:'#A4C639'}}>Blaze</span></h1>
@@ -45,10 +44,8 @@ export default function Home() {
           />
         </div>
 
-        {/* Chat */}
         <Chat />
 
-        {/* Featured Picks */}
         <section style={{marginTop:32}}>
           <h2>Featured Picks</h2>
           <p className="muted">Hand-picked cannabis gear we love (add your affiliate links).</p>
@@ -61,7 +58,6 @@ export default function Home() {
           </div>
         </section>
 
-        {/* Buy Me a Coffee */}
         <div style={{marginTop:16}}>
           <a
             className="btn"
