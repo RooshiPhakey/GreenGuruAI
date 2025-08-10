@@ -85,7 +85,17 @@ export default function Home() {
                   boxShadow:'0 8px 20px rgba(0,0,0,0.12)'
                 }}
               >
-                <img src={p.img} alt={p.name} style={{maxWidth:'100%',borderRadius:'8px'}} />
+                <img
+  src={p.img}
+  alt={p.name}
+  style={{
+    maxWidth: '100%',
+    maxHeight: '150px', // limits height
+    objectFit: 'contain', // keeps aspect ratio without cropping
+    borderRadius: '8px'
+  }}
+/>
+
                 <strong style={{display:'block',margin:'10px 0 8px'}}>{p.name}</strong>
                 <span style={{
                   display:'inline-block',
