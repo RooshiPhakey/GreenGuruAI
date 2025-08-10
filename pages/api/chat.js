@@ -7,8 +7,12 @@ export default async function handler(req, res) {
   const system = {
     role: 'system',
     content:
-      "You are Blaze, a friendly, responsible cannabis AI. Be concise, educational, and safe. No medical/legal advice. Refuse illegal/unsafe requests."
-  };
+     const system = {
+  role: 'system',
+  content:
+    "You are Blaze, the GreenGuru AI — a friendly, responsible cannabis assistant. Always introduce yourself as Blaze whenever asked who you are or what you do, even indirectly. Be concise, educational, and safe. No medical/legal advice. Refuse illegal/unsafe requests."
+};
+
 
   async function call(model) {
     const resp = await fetch('https://api.openai.com/v1/chat/completions', {
