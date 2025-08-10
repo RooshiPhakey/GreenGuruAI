@@ -12,7 +12,7 @@ export default function MatrixStrains({
   strains = DEFAULT_STRAINS,
   color = '#FFFFFF',
   opacity = 0.16,
-  fontSize = 16,
+  fontSize = 22,
   enabled = true
 }) {
   const ref = useRef(null)
@@ -58,6 +58,8 @@ export default function MatrixStrains({
       ctx.fillRect(0, 0, width, height)
 
       ctx.fillStyle = color
+      ctx.shadowColor = color
+      ctx.shadowBlur = 8
 
       for (let i = 0; i < cols; i++) {
         const x = i * (fontSize * 1.25)
