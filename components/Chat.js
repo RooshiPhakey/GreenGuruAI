@@ -20,6 +20,19 @@ export default function Chat() {
   async function sendMessage(e) {
     e.preventDefault()
     const content = input.trim()
+    // simple per-browser daily limit
+try {
+  const key = todayKey();
+  const used = Number(localStorage.getItem(key) || 0);
+  const LIMIT = 10; // ← change if you want
+  if (used >= LIMIT) {
+    const nextList = [...messages, { role:'assistant', content:`Daily limit reached (${LIMIT}/day). Come back tomorrow 💚` }];
+    setMessages(nextList);
+    return;
+  }
+  localStorage.setItem(key, used + 1);
+} catch {}
+
     if (!content) return
     const next = [...messages, { role: 'user', content }]
     setMessages(next)
