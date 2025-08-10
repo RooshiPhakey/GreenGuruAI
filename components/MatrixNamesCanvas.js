@@ -10,10 +10,10 @@ const DEFAULT_STRAINS = [
 
 export default function MatrixNamesCanvas({
   strains = DEFAULT_STRAINS,
-  color = '#39FF14',
-  fontSize = 16,
-  fade = 0.06,        // trail strength (higher = faster fade)
-  speed = 1.0,        // base speed multiplier
+  color = '#A4C639',  // brand green
+  fontSize = 20,      // bigger for readability
+  fade = 0.14,        // stronger fade so bottom doesn't build up
+  speed = 0.35,       // slower overall
   enabled = true
 }) {
   const ref = useRef(null)
@@ -30,6 +30,7 @@ export default function MatrixNamesCanvas({
     const ctx = canvas.getContext('2d')
     let width = 0, height = 0, cols = 0
     let drops = []
+    let velocities = []
     let dpr = Math.max(1, window.devicePixelRatio || 1)
 
     function setSize() {
@@ -42,13 +43,15 @@ export default function MatrixNamesCanvas({
       canvas.style.height = height + 'px'
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0)
       cols = Math.max(8, Math.floor(width / (fontSize * 1.2)))
-      drops = Array(cols).fill(1 + Math.random() * 10)
+      drops = Array(cols).fill(0).map(() => Math.random() * (height / fontSize))     // random starting rows
+      velocities = Array(cols).fill(0).map(() => speed * (0.35 + Math.random() * 0.35)) // slight per-column variance
       ctx.font = `${fontSize}px ui-monospace, SFMono-Regular, Menlo, Consolas, monospace`
       ctx.textBaseline = 'top'
     }
 
     function draw() {
       // Fade the canvas slightly to create the trail effect
+      ctx.globalCompositeOperation = 'source-over'
       ctx.fillStyle = `rgba(0,0,0,${fade})`
       ctx.fillRect(0, 0, width, height)
 
@@ -56,18 +59,21 @@ export default function MatrixNamesCanvas({
       for (let i = 0; i < cols; i++) {
         const x = i * (fontSize * 1.2)
         const y = drops[i] * fontSize
-        // Pick a random strain each step
+
+        // Pick a strain for this column and show a sliding chunk
         const s = strains[(i + Math.floor(y / fontSize)) % strains.length]
-        // Draw a slice so it looks like vertical rain
         const len = Math.max(3, Math.min(s.length, 10))
         const start = Math.floor((y / fontSize) % Math.max(1, s.length - len))
         const chunk = s.slice(start, start + len)
+
+        // Draw the chunk
         ctx.fillText(chunk, x, y)
 
-        // Move downward; reset randomly once off screen
-        drops[i] += speed * (0.6 + Math.random() * 0.7)
-        if (y > height + 60) {
-          drops[i] = -Math.random() * 10
+        // Move downward; when off-screen, reset above the top and randomize speed again
+        drops[i] += velocities[i]
+        if (y > height + fontSize * 2) {
+          drops[i] = -Math.random() * 6   // restart slightly above top
+          velocities[i] = speed * (0.35 + Math.random() * 0.35)
         }
       }
       rafRef.current = requestAnimationFrame(draw)
@@ -75,8 +81,9 @@ export default function MatrixNamesCanvas({
 
     setSize()
     rafRef.current = requestAnimationFrame(draw)
-    const onResize = () => { setSize() }
+    const onResize = () => setSize()
     window.addEventListener('resize', onResize)
+
     return () => {
       cancelAnimationFrame(rafRef.current)
       window.removeEventListener('resize', onResize)
