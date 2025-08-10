@@ -41,12 +41,15 @@ export default function Home() {
       </header>
 
       <main>
-        {/* Heading + Blaze */}
-        <div style={{display:'flex',alignItems:'center',gap:16,flexWrap:'wrap'}}>
-          <div>
-            <h1 style={{margin:'8px 0'}}>Meet your Guru Assistant <span style={{color:'#A4C639'}}>Blaze</span></h1>
-            <p className="muted">Anonymous-friendly chat. Ask about strains, methods, safer use, legality by region, and more.</p>
-          </div>
+        {/* Centered Blaze heading */}
+        <div style={{
+          display:'flex',
+          flexDirection:'column',
+          alignItems:'center',
+          gap:16,
+          textAlign:'center',
+          marginTop:20
+        }}>
           <Image
             src="/blaze.png"
             alt="Blaze — your Guru Assistant"
@@ -55,16 +58,24 @@ export default function Home() {
             className="blaze"
             priority
           />
+          <h1 style={{margin:'8px 0'}}>Meet your Guru Assistant <span style={{color:'#A4C639'}}>Blaze</span></h1>
+          <p className="muted">Anonymous-friendly chat. Ask about strains, methods, safer use, legality by region, and more.</p>
         </div>
 
         {/* Chat */}
         <Chat />
 
-        {/* Featured Picks with hover effect */}
-        <section style={{marginTop:32}}>
+        {/* Centered Featured Picks */}
+        <section style={{marginTop:32, textAlign:'center'}}>
           <h2>Featured Picks</h2>
 
-          <div style={{display:'flex',flexWrap:'wrap',gap:'12px',marginTop:'12px'}}>
+          <div style={{
+            display:'flex',
+            flexWrap:'wrap',
+            gap:'12px',
+            marginTop:'12px',
+            justifyContent:'center'
+          }}>
             {picks.map((p, i) => (
               <a
                 key={i}
@@ -73,6 +84,7 @@ export default function Home() {
                 rel="noreferrer sponsored nofollow"
                 style={{
                   flex:'1 1 220px',
+                  maxWidth:'280px',
                   textAlign:'center',
                   border:'1px solid rgba(255,255,255,0.2)',
                   borderRadius:'12px',
@@ -81,16 +93,18 @@ export default function Home() {
                   color:'#000',
                   textDecoration:'none',
                   boxShadow:'0 8px 20px rgba(0,0,0,0.12)',
-                  transition:'transform 0.2s ease, box-shadow 0.2s ease',
+                  transition:'transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease',
                   cursor:'pointer'
                 }}
                 onMouseEnter={e => {
                   e.currentTarget.style.transform = 'translateY(-4px)'
                   e.currentTarget.style.boxShadow = '0 12px 24px rgba(0,0,0,0.18)'
+                  e.currentTarget.style.borderColor = '#A4C639'
                 }}
                 onMouseLeave={e => {
                   e.currentTarget.style.transform = 'translateY(0)'
                   e.currentTarget.style.boxShadow = '0 8px 20px rgba(0,0,0,0.12)'
+                  e.currentTarget.style.borderColor = 'rgba(255,255,255,0.2)'
                 }}
               >
                 <img
@@ -121,8 +135,8 @@ export default function Home() {
           </p>
         </section>
 
-        {/* Buy Me a Coffee */}
-        <div style={{marginTop:16}}>
+        {/* Centered Buy Me a Coffee */}
+        <div style={{marginTop:16, display:'flex', justifyContent:'center'}}>
           <a
             className="btn"
             href={(process.env.NEXT_PUBLIC_BUYMEACOFFEE_URL || process.env.BUYMEACOFFEE_URL || 'https://www.buymeacoffee.com/greenguruai')}
@@ -136,3 +150,4 @@ export default function Home() {
     </div>
   )
 }
+.
