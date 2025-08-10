@@ -1,4 +1,11 @@
 import { useEffect, useRef, useState } from 'react'
+function todayKey() {
+  const d = new Date();
+  const m = String(d.getUTCMonth() + 1).padStart(2,'0');
+  const day = String(d.getUTCDate()).padStart(2,'0');
+  return `gg_limit_${d.getUTCFullYear()}-${m}-${day}`;
+}
+
 
 export default function Chat() {
   const [messages, setMessages] = useState([
