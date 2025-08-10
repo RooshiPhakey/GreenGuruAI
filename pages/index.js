@@ -36,7 +36,7 @@ export default function Home() {
           </div>
           <Image
             src="/blaze.png"
-            alt="Blaze — your Guru Assistant"
+            alt="Blaze — your Green Guru AI Assistant"
             width={140}
             height={140}
             className="blaze"
