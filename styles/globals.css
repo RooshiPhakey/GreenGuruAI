@@ -20,3 +20,6 @@ body{margin:0;background:#0b1b12;color:var(--ink);font-family:ui-sans-serif,syst
 .leaf.l1{left:8%;--x:-15vw;--dur:28s}.leaf.l2{left:22%;--x:10vw;--dur:32s}.leaf.l3{left:37%;--x:-8vw;--dur:26s}.leaf.l4{left:58%;--x:12vw;--dur:30s}.leaf.l5{left:76%;--x:-6vw;--dur:34s}.leaf.l6{left:90%;--x:16vw;--dur:27s}
 .product-card{flex:1 1 220px;max-width:280px;text-align:center;border:1px solid rgba(255,255,255,.2);border-radius:12px;padding:8px;background:#fff;color:#000;text-decoration:none;box-shadow:0 8px 20px rgba(0,0,0,.12);transition:transform .2s ease,box-shadow .2s ease,border-color .2s ease,filter .2s ease;cursor:pointer}
 .product-card:hover{transform:translateY(-4px) scale(1.02);box-shadow:0 16px 32px rgba(0,0,0,.18);border-color:#A4C639;filter:saturate(1.06)}
+
+/* Matrix background canvas */
+.matrix-canvas{position:absolute;inset:0;width:100%;height:100%;opacity:.75;z-index:0;pointer-events:none;mix-blend-mode:screen}
