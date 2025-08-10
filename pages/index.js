@@ -5,10 +5,23 @@ import Chat from '../components/Chat'
 const SITE_NAME = process.env.SITE_NAME || 'GreenGuruAI'
 
 export default function Home() {
+  // Your Featured Picks with product images
   const picks = [
-    { name:'Smell-proof bag', link:'https://example.com/smell-proof-bag' },
-    { name:'Quality grinder', link:'https://example.com/grinder' },
-    { name:'Rolling tray', link:'https://example.com/rolling-tray' }
+    {
+      name: 'Work-Safe Pre-Roll Holder',
+      link: 'https://amzn.to/4lmVicu',
+      img: 'https://m.media-amazon.com/images/I/81GwOmUpA4L._AC_SX679_.jpg'
+    },
+    {
+      name: 'Santa Cruz Shredder',
+      link: 'https://amzn.to/4lmVicu',
+      img: 'https://m.media-amazon.com/images/I/71KFwOfXEPL._AC_SX679_.jpg'
+    },
+    {
+      name: 'Carry Case +',
+      link: 'https://amzn.to/4lon8VA',
+      img: 'https://m.media-amazon.com/images/I/613ayF1eOhL._AC_SX679_.jpg'
+    }
   ]
 
   return (
@@ -29,14 +42,15 @@ export default function Home() {
       </header>
 
       <main>
+        {/* Heading + Blaze */}
         <div style={{display:'flex',alignItems:'center',gap:16,flexWrap:'wrap'}}>
           <div>
-            <h1 style={{margin:'8px 0'}}>Meet your Green Guru AI Assistant <span style={{color:'#A4C639'}}>Blaze</span></h1>
+            <h1 style={{margin:'8px 0'}}>Meet your Guru Assistant <span style={{color:'#A4C639'}}>Blaze</span></h1>
             <p className="muted">Anonymous-friendly chat. Ask about strains, methods, safer use, legality by region, and more.</p>
           </div>
           <Image
             src="/blaze.png"
-            alt="Blaze — your Green Guru AI Assistant"
+            alt="Blaze — your Guru Assistant"
             width={140}
             height={140}
             className="blaze"
@@ -44,20 +58,53 @@ export default function Home() {
           />
         </div>
 
+        {/* Chat */}
         <Chat />
 
+        {/* Featured Picks with images */}
         <section style={{marginTop:32}}>
           <h2>Featured Picks</h2>
           <p className="muted">Hand-picked cannabis gear we love (add your affiliate links).</p>
-          <div style={{display:'flex', gap:16, flexWrap:'wrap', marginTop:12}}>
-            {picks.map((p, i)=>(
-              <a key={i} className="card" href={p.link} target="_blank" rel="noreferrer" style={{flex:'1 1 180px', textAlign:'center'}}>
-                <strong>{p.name}</strong>
+
+          <div style={{display:'flex',flexWrap:'wrap',gap:'12px',marginTop:'12px'}}>
+            {picks.map((p, i) => (
+              <a
+                key={i}
+                href={p.link}
+                target="_blank"
+                rel="noreferrer sponsored nofollow"
+                style={{
+                  flex:'1 1 220px',
+                  textAlign:'center',
+                  border:'1px solid rgba(255,255,255,0.2)',
+                  borderRadius:'12px',
+                  padding:'12px',
+                  background:'#fff',
+                  color:'#000',
+                  textDecoration:'none',
+                  boxShadow:'0 8px 20px rgba(0,0,0,0.12)'
+                }}
+              >
+                <img src={p.img} alt={p.name} style={{maxWidth:'100%',borderRadius:'8px'}} />
+                <strong style={{display:'block',margin:'10px 0 8px'}}>{p.name}</strong>
+                <span style={{
+                  display:'inline-block',
+                  background:'#A4C639',
+                  color:'#fff',
+                  padding:'8px 14px',
+                  borderRadius:'8px',
+                  fontWeight:'bold'
+                }}>Shop Now</span>
               </a>
             ))}
           </div>
+
+          <p className="legal" style={{marginTop:8}}>
+            As an Amazon Associate, we earn from qualifying purchases.
+          </p>
         </section>
 
+        {/* Buy Me a Coffee */}
         <div style={{marginTop:16}}>
           <a
             className="btn"
